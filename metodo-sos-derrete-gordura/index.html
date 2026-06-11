@@ -755,6 +755,38 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
 <script>window.lazyLoadOptions=[{elements_selector:"img[data-lazy-src],.rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,callback_loaded:function(element){if(element.tagName==="IFRAME"&&element.dataset.rocketLazyload=="fitvidscompatible"){if(element.classList.contains("lazyloaded")){if(typeof window.jQuery!="undefined"){if(jQuery.fn.fitVids){jQuery(element).parent().fitVids()}}}}}},{elements_selector:".rocket-lazyload",data_src:"lazy-src",data_srcset:"lazy-srcset",data_sizes:"lazy-sizes",class_loading:"lazyloading",class_loaded:"lazyloaded",threshold:300,}];window.addEventListener('LazyLoad::Initialized',function(e){var lazyLoadInstance=e.detail.instance;if(window.MutationObserver){var observer=new MutationObserver(function(mutations){var image_count=0;var iframe_count=0;var rocketlazy_count=0;mutations.forEach(function(mutation){for(var i=0;i<mutation.addedNodes.length;i++){if(typeof mutation.addedNodes[i].getElementsByTagName!=='function'){continue}
 if(typeof mutation.addedNodes[i].getElementsByClassName!=='function'){continue}
 images=mutation.addedNodes[i].getElementsByTagName('img');is_image=mutation.addedNodes[i].tagName=="IMG";iframes=mutation.addedNodes[i].getElementsByTagName('iframe');is_iframe=mutation.addedNodes[i].tagName=="IFRAME";rocket_lazy=mutation.addedNodes[i].getElementsByClassName('rocket-lazyload');image_count+=images.length;iframe_count+=iframes.length;rocketlazy_count+=rocket_lazy.length;if(is_image){image_count+=1}
-if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script>	<script src="wp-content/cache/min/1/9b3a8af322c8c6d7b6ea537412a0facf.js" data-minify="1"></script></body>
+if(is_iframe){iframe_count+=1}}});if(image_count>0||iframe_count>0||rocketlazy_count>0){lazyLoadInstance.update()}});var b=document.getElementsByTagName("body")[0];var config={childList:!0,subtree:!0};observer.observe(b,config)}},!1)</script><script data-no-minify="1" async src="wp-content/plugins/wp-rocket/assets/js/lazyload/17.8.3/lazyload.min.js"></script>	<script src="wp-content/cache/min/1/9b3a8af322c8c6d7b6ea537412a0facf.js" data-minify="1"></script><script>
+/* Play do video (independente do Elementor JS) */
+(function(){
+  document.querySelectorAll('.elementor-widget-video').forEach(function(w){
+    var wrap=w.querySelector('.elementor-wrapper')||w;
+    var overlay=w.querySelector('.elementor-custom-embed-image-overlay');
+    var target=w.querySelector('.elementor-video')||wrap;
+    var raw=w.getAttribute('data-settings')||'';
+    var t=document.createElement('textarea'); t.innerHTML=raw; raw=t.value;
+    var ds={}; try{ds=JSON.parse(raw);}catch(e){}
+    var url=ds.youtube_url||'';
+    var mm=url.match(/[?&]v=([^&]+)/)||url.match(/youtu\.be\/([^?&]+)/)||url.match(/embed\/([^?&]+)/);
+    var id=mm?mm[1]:null;
+    if(!id) return;
+    wrap.style.position=wrap.style.position||'relative';
+    function play(e){
+      if(e){e.preventDefault();e.stopPropagation();}
+      var ifr=document.createElement('iframe');
+      ifr.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+      ifr.setAttribute('frameborder','0');
+      ifr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
+      ifr.setAttribute('allowfullscreen','');
+      ifr.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%;border:0;z-index:5;';
+      target.innerHTML=''; target.appendChild(ifr);
+      if(overlay) overlay.style.display='none';
+    }
+    var clicker=overlay||wrap;
+    clicker.style.cursor='pointer';
+    clicker.addEventListener('click',play);
+  });
+})();
+</script>
+</body>
 </html>
 <!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1781199554 -->
